@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -54,63 +55,143 @@ namespace ChessBoardModel
                 {
                     theGrid[i, j].LegalNextMove = false;
                     theGrid[i, j].CurrentlyOccupied = false;
+                    switch (chessPiece)
+                    {
+                        case "Rook":
+                            if (i == currentCell.RowNumber)
+                            {
+                                theGrid[currentCell.RowNumber, j].LegalNextMove = true;
+                            }
+                            if (j == currentCell.ColNumber)
+                            {
+                                theGrid[i, currentCell.ColNumber].LegalNextMove = true;
+                            }
+                           break;
+                        case "Knight":
+                            if (isSafe(currentCell.RowNumber + 2, currentCell.ColNumber + 1))
+                            {
+                                theGrid[currentCell.RowNumber + 2, currentCell.ColNumber + 1].LegalNextMove = true;
+                            }
+                            if (isSafe(currentCell.RowNumber + 2, currentCell.ColNumber - 1))
+                            {
+                                theGrid[currentCell.RowNumber + 2, currentCell.ColNumber - 1].LegalNextMove = true;
+                            }
+                            if (isSafe(currentCell.RowNumber - 2, currentCell.ColNumber + 1))
+                            {
+                                theGrid[currentCell.RowNumber - 2, currentCell.ColNumber + 1].LegalNextMove = true;
+                            }
+                            if (isSafe(currentCell.RowNumber - 2, currentCell.ColNumber - 1))
+                            {
+                                theGrid[currentCell.RowNumber - 2, currentCell.ColNumber - 1].LegalNextMove = true;
+                            }
+                            if (isSafe(currentCell.RowNumber + 1, currentCell.ColNumber + 2))
+                            {
+                                theGrid[currentCell.RowNumber + 1, currentCell.ColNumber + 2].LegalNextMove = true;
+                            }
+                            if (isSafe(currentCell.RowNumber + 1, currentCell.ColNumber - 2))
+                            {
+                                theGrid[currentCell.RowNumber + 1, currentCell.ColNumber - 2].LegalNextMove = true;
+                            }
+                            if (isSafe(currentCell.RowNumber - 1, currentCell.ColNumber + 2))
+                            {
+                                theGrid[currentCell.RowNumber - 1, currentCell.ColNumber + 2].LegalNextMove = true;
+                            }
+                            if (isSafe(currentCell.RowNumber - 1, currentCell.ColNumber - 2))
+                            {
+                                theGrid[currentCell.RowNumber - 1, currentCell.ColNumber - 2].LegalNextMove = true;
+                            }
+
+                            break;
+
+                        case "King":
+                            if (isSafe(currentCell.RowNumber + 1, currentCell.ColNumber + 1))
+                            {
+                                theGrid[currentCell.RowNumber + 1, currentCell.ColNumber + 1].LegalNextMove = true;
+                            }
+                            if (isSafe(currentCell.RowNumber + 1, currentCell.ColNumber - 1))
+                            {
+                                theGrid[currentCell.RowNumber + 1, currentCell.ColNumber - 1].LegalNextMove = true;
+                            }
+                            if (isSafe(currentCell.RowNumber - 1, currentCell.ColNumber + 1))
+                            {
+                                theGrid[currentCell.RowNumber - 1, currentCell.ColNumber + 1].LegalNextMove = true;
+                            }
+                            if (isSafe(currentCell.RowNumber - 1, currentCell.ColNumber - 1))
+                            {
+                                theGrid[currentCell.RowNumber - 1, currentCell.ColNumber - 1].LegalNextMove = true;
+                            }
+                            if (isSafe(currentCell.RowNumber, currentCell.ColNumber + 1))
+                            {
+                                theGrid[currentCell.RowNumber, currentCell.ColNumber + 1].LegalNextMove = true;
+                            }
+                            if (isSafe(currentCell.RowNumber - 1, currentCell.ColNumber))
+                            {
+                                theGrid[currentCell.RowNumber - 1, currentCell.ColNumber].LegalNextMove = true;
+                            }
+                            if (isSafe(currentCell.RowNumber + 1, currentCell.ColNumber))
+                            {
+                                theGrid[currentCell.RowNumber + 1, currentCell.ColNumber].LegalNextMove = true;
+                            }
+                            if (isSafe(currentCell.RowNumber, currentCell.ColNumber - 1))
+                            {
+                                theGrid[currentCell.RowNumber, currentCell.ColNumber - 1].LegalNextMove = true;
+                            }
+
+                            break;
+
+                        case "Bishop":
+                            for (int k = 0; k < Size; k++)
+                            {
+                                int rowDiff = currentCell.RowNumber - k;
+                                int colDiff = currentCell.ColNumber + rowDiff;
+                                int colDiff2 = currentCell.ColNumber - rowDiff;
+
+                                if (colDiff >= 0 && colDiff < Size)
+                                {
+                                    theGrid[k, colDiff].LegalNextMove = true;
+                                }
+
+                                if (colDiff2 >= 0 && colDiff2 < Size)
+                                {
+                                    theGrid[k, colDiff2].LegalNextMove = true;
+                                }
+                            }
+
+                            break;
+
+                        case "Queen":
+                            if (i == currentCell.RowNumber)
+                            {
+                                theGrid[currentCell.RowNumber, j].LegalNextMove = true;
+                            }
+                            if (j == currentCell.ColNumber)
+                            {
+                                theGrid[i, currentCell.ColNumber].LegalNextMove = true;
+                            }
+
+                            for (int k = 0; k < Size; k++)
+                            {
+                                int rowDiff = currentCell.RowNumber - k;
+                                int colDiff = currentCell.ColNumber + rowDiff;
+                                int colDiff2 = currentCell.ColNumber - rowDiff;
+
+                                if (colDiff >= 0 && colDiff < Size)
+                                {
+                                    theGrid[k, colDiff].LegalNextMove = true;
+                                }
+
+                                if (colDiff2 >= 0 && colDiff2 < Size)
+                                {
+                                    theGrid[k, colDiff2].LegalNextMove = true;
+                                }
+                            }
+
+                            break;
+
+                        default:
+                            break;
+                    }
                 }
-            }
-
-            // find all legal moves and mark cells as "legal"
-
-            switch (chessPiece)
-            {
-                case "Knight":
-                    if (isSafe(currentCell.RowNumber + 2, currentCell.ColNumber + 1))
-                    {
-                        theGrid[currentCell.RowNumber + 2, currentCell.ColNumber + 1].LegalNextMove = true;
-                    }
-                    if (isSafe(currentCell.RowNumber + 2, currentCell.ColNumber - 1))
-                    {
-                        theGrid[currentCell.RowNumber + 2, currentCell.ColNumber - 1].LegalNextMove = true;
-                    }
-                    if (isSafe(currentCell.RowNumber - 2, currentCell.ColNumber + 1))
-                    {
-                        theGrid[currentCell.RowNumber - 2, currentCell.ColNumber + 1].LegalNextMove = true;
-                    }
-                    if (isSafe(currentCell.RowNumber - 2, currentCell.ColNumber - 1))
-                    {
-                        theGrid[currentCell.RowNumber - 2, currentCell.ColNumber - 1].LegalNextMove = true;
-                    }
-                    if (isSafe(currentCell.RowNumber + 1, currentCell.ColNumber + 2))
-                    {
-                        theGrid[currentCell.RowNumber + 1, currentCell.ColNumber + 2].LegalNextMove = true;
-                    }
-                    if (isSafe(currentCell.RowNumber + 1, currentCell.ColNumber - 2))
-                    {
-                        theGrid[currentCell.RowNumber + 1, currentCell.ColNumber - 2].LegalNextMove = true;
-                    }
-                    if (isSafe(currentCell.RowNumber - 1, currentCell.ColNumber + 2))
-                    {
-                        theGrid[currentCell.RowNumber - 1, currentCell.ColNumber + 2].LegalNextMove = true;
-                    }
-                    if (isSafe(currentCell.RowNumber - 1, currentCell.ColNumber - 2))
-                    {
-                        theGrid[currentCell.RowNumber - 1, currentCell.ColNumber - 2].LegalNextMove = true;
-                    }
-
-                    break;
-
-                case "King":
-                    break;
-
-                case "Rook":
-                    break;
-
-                case "Bishop":
-                    break;
-
-                case "Queen":
-                    break;
-
-                default:
-                    break;
             }
             theGrid[currentCell.RowNumber, currentCell.ColNumber].CurrentlyOccupied = true;
         }

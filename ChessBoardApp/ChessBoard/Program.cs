@@ -14,9 +14,11 @@ namespace ChessBoard
             // ask the user for an x and y coordinate where we will place a piece
             Cell currentCell = setCurrentCell();
             currentCell.CurrentlyOccupied = true;
+            Console.WriteLine("What kind of chess piece would you like to place on the board? Knight, King, Queen, Rook, Bishop?");
+            string chessPiece = Console.ReadLine();
 
             // calculate all legal moves for that piece
-            myBoard.MarkNextLegalMoves(currentCell, "Knight");
+            myBoard.MarkNextLegalMoves(currentCell, chessPiece);
 
             // print the chess board. Use an "x" for occupied square
             printBoard(myBoard);
@@ -36,8 +38,8 @@ namespace ChessBoard
             }
             catch 
             {
-                Console.WriteLine("Not valid. Default set to 3");
-                currentRow = 3;
+                Console.WriteLine("Not valid. Enter new number value");
+                currentRow = int.Parse(Console.ReadLine());
             }
 
             try
@@ -47,8 +49,8 @@ namespace ChessBoard
             }
             catch
             {
-                Console.WriteLine("Not valid. Default set to 3");
-                currentCol = 3;
+                Console.WriteLine("Not valid. Enter new number value");
+                currentCol = int.Parse(Console.ReadLine());
             }
 
             if (currentRow < 0 || currentRow > myBoard.Size || currentCol < 0 || currentCol > myBoard.Size)
@@ -57,9 +59,9 @@ namespace ChessBoard
                 currentCol = 3;
                 currentRow = 3;
             }
-            myBoard.theGrid[currentRow, currentCol].CurrentlyOccupied = true;
+            myBoard.theGrid[currentRow -1, currentCol-1].CurrentlyOccupied = true;
 
-            return myBoard.theGrid[currentRow, currentCol];
+            return myBoard.theGrid[currentRow - 1, currentCol - 1];
         }
 
         private static void printBoard(Board myBoard)
@@ -106,7 +108,7 @@ namespace ChessBoard
             Console.Write("+");
             Console.WriteLine();
 
-            Console.WriteLine("===============================");
+            Console.WriteLine("=================================");
         }
     }
 }
